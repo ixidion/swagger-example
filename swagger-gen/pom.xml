@@ -13,40 +13,44 @@
     <artifactId>swagger-gen</artifactId>
 
     <build>
+        <plugins>
+            <!-- activate swagger.io plugin -->
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>2.2.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- specify the swagger yaml -->
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/swagger.yaml</inputSpec>
 
-    <plugins>
-    <!-- activate the plugin -->
-        <plugin>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-codegen-maven-plugin</artifactId>
-            <version>2.2.0-SNAPSHOT</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>generate</goal>
-                    </goals>
-                    <configuration>
-                        <!-- specify the swagger yaml -->
-                        <inputSpec>${project.basedir}/src/main/resources/swagger/swagger.yaml</inputSpec>
-
-                        <!-- target to generate. We want a JAX-RS Webservice to be generated. Many more are possible. -->
-                        <language>jaxrs</language>
+                            <!-- target to generate. We want a JAX-RS Webservice to be generated. Many more are possible. -->
+                            <language>jaxrs</language>
 
 
-                        <!-- override the default library to jersey2 -->
-                        <library>jersey2</library>
-                        <apiPackage>de.bluemx.swagger</apiPackage>
-
-                        <!-- I tried to experiment with this parameter, but the result was not ok -->
-<!--                        <environmentVariables>
-                            <apis/>
-                        </environmentVariables>-->
-
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
+                            <!-- override the default library to jersey2 -->
+                            <library>jersey2</library>
+                            <apiPackage>de.bluemx.swagger</apiPackage>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Exclude Class-File from jar (impl-Directory) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/de/bluemx/swagger/impl/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
